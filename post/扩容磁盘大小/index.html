@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html
+  class="not-ready text-sm lg:text-base"
+  style="--bg: #faf6f1"
+  lang="en-us"
+>
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>扩容磁盘大小 - My New Hugo Site</title>
+
+  
+  <meta name="theme-color" />
+  
+  <meta name="description" content="扩容磁盘大小 查看磁盘分区信息
+lsblk 一.虚拟机dos扩容
+1.虚拟机扩容磁盘
+2.查看磁盘相关信息
+df -h 3.查看磁盘分区
+fdisk -l 4.创建一个新分区（/dev/sda3）
+fdisk /dev/sda 5.创建完成后重启
+reboot 6.创建物理卷
+pvcreate /dev/sda3 7.查看新建的物理卷和大小
+pvdisplay 8.将添加新的物理卷（PV），加载到需要扩容的卷组（VG）
+vgextend 卷组名 /dev/sda3 9.查看卷组信息
+vgdisplay 10.增加卷组大小
+#查看卷组所在目录 cd /dev/mapper ls -l #增加卷组大小 lvresize -l &#43;100%FREE /dev/mapper/centos-root 12.重新识别卷组大小
+xfs_growfs /dev/mapper/centos-root 二.云服务gpt扩容
+1.卸载需要扩容的分区
+umount -lf /dev/nvme1n1p1 2.使用parted对分区进行扩容
+parted /dev/nvme1n1p1 3.在parted界面使用 p 查看当前分区详细信息
+(parted)p 4.扩容分区: resizepart 分区号 分区结束位置
+(parted)resizepart 1 1000G 5.退出 parted
+(parted)quit 6.重新挂载分区
+mount /dev/nvme1n1p1 /data 7.让文件系统识别变更的分区大小(不同文件系统命令不同，举例的是xfs)
+resize2fs /dev/nvme1n1p1 8." />
+  <meta
+    name="author"
+    content=""
+  />
+  
+
+  
+  
+  
+  
+  
+  
+  <link rel="preload stylesheet" as="style" href="https://jinan999.github.io/main.min.css" />
+
+  
+  <script
+    defer
+    src="https://jinan999.github.io/highlight.min.js"
+    onload="hljs.initHighlightingOnLoad();"
+  ></script>
+  
+
+  
+   
+  <link rel="preload" as="image" href="https://jinan999.github.io/theme.png" />
+
+  
+  
+  
+  
+
+  
+
+  
+  <link rel="icon" href="https://jinan999.github.io/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://jinan999.github.io/apple-touch-icon.png" />
+
+  
+  <meta name="generator" content="Hugo 0.110.0-DEV">
+
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <meta property="og:title" content="扩容磁盘大小" />
+<meta property="og:description" content="扩容磁盘大小 查看磁盘分区信息
+lsblk 一.虚拟机dos扩容
+1.虚拟机扩容磁盘
+2.查看磁盘相关信息
+df -h 3.查看磁盘分区
+fdisk -l 4.创建一个新分区（/dev/sda3）
+fdisk /dev/sda 5.创建完成后重启
+reboot 6.创建物理卷
+pvcreate /dev/sda3 7.查看新建的物理卷和大小
+pvdisplay 8.将添加新的物理卷（PV），加载到需要扩容的卷组（VG）
+vgextend 卷组名 /dev/sda3 9.查看卷组信息
+vgdisplay 10.增加卷组大小
+#查看卷组所在目录 cd /dev/mapper ls -l #增加卷组大小 lvresize -l &#43;100%FREE /dev/mapper/centos-root 12.重新识别卷组大小
+xfs_growfs /dev/mapper/centos-root 二.云服务gpt扩容
+1.卸载需要扩容的分区
+umount -lf /dev/nvme1n1p1 2.使用parted对分区进行扩容
+parted /dev/nvme1n1p1 3.在parted界面使用 p 查看当前分区详细信息
+(parted)p 4.扩容分区: resizepart 分区号 分区结束位置
+(parted)resizepart 1 1000G 5.退出 parted
+(parted)quit 6.重新挂载分区
+mount /dev/nvme1n1p1 /data 7.让文件系统识别变更的分区大小(不同文件系统命令不同，举例的是xfs)
+resize2fs /dev/nvme1n1p1 8." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://jinan999.github.io/post/%E6%89%A9%E5%AE%B9%E7%A3%81%E7%9B%98%E5%A4%A7%E5%B0%8F/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2023-01-29T21:43:11+08:00" />
+<meta property="article:modified_time" content="2023-01-29T21:43:11+08:00" />
+
+  
+  <meta itemprop="name" content="扩容磁盘大小">
+<meta itemprop="description" content="扩容磁盘大小 查看磁盘分区信息
+lsblk 一.虚拟机dos扩容
+1.虚拟机扩容磁盘
+2.查看磁盘相关信息
+df -h 3.查看磁盘分区
+fdisk -l 4.创建一个新分区（/dev/sda3）
+fdisk /dev/sda 5.创建完成后重启
+reboot 6.创建物理卷
+pvcreate /dev/sda3 7.查看新建的物理卷和大小
+pvdisplay 8.将添加新的物理卷（PV），加载到需要扩容的卷组（VG）
+vgextend 卷组名 /dev/sda3 9.查看卷组信息
+vgdisplay 10.增加卷组大小
+#查看卷组所在目录 cd /dev/mapper ls -l #增加卷组大小 lvresize -l &#43;100%FREE /dev/mapper/centos-root 12.重新识别卷组大小
+xfs_growfs /dev/mapper/centos-root 二.云服务gpt扩容
+1.卸载需要扩容的分区
+umount -lf /dev/nvme1n1p1 2.使用parted对分区进行扩容
+parted /dev/nvme1n1p1 3.在parted界面使用 p 查看当前分区详细信息
+(parted)p 4.扩容分区: resizepart 分区号 分区结束位置
+(parted)resizepart 1 1000G 5.退出 parted
+(parted)quit 6.重新挂载分区
+mount /dev/nvme1n1p1 /data 7.让文件系统识别变更的分区大小(不同文件系统命令不同，举例的是xfs)
+resize2fs /dev/nvme1n1p1 8."><meta itemprop="datePublished" content="2023-01-29T21:43:11+08:00" />
+<meta itemprop="dateModified" content="2023-01-29T21:43:11+08:00" />
+<meta itemprop="wordCount" content="73">
+<meta itemprop="keywords" content="" />
+  
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="扩容磁盘大小"/>
+<meta name="twitter:description" content="扩容磁盘大小 查看磁盘分区信息
+lsblk 一.虚拟机dos扩容
+1.虚拟机扩容磁盘
+2.查看磁盘相关信息
+df -h 3.查看磁盘分区
+fdisk -l 4.创建一个新分区（/dev/sda3）
+fdisk /dev/sda 5.创建完成后重启
+reboot 6.创建物理卷
+pvcreate /dev/sda3 7.查看新建的物理卷和大小
+pvdisplay 8.将添加新的物理卷（PV），加载到需要扩容的卷组（VG）
+vgextend 卷组名 /dev/sda3 9.查看卷组信息
+vgdisplay 10.增加卷组大小
+#查看卷组所在目录 cd /dev/mapper ls -l #增加卷组大小 lvresize -l &#43;100%FREE /dev/mapper/centos-root 12.重新识别卷组大小
+xfs_growfs /dev/mapper/centos-root 二.云服务gpt扩容
+1.卸载需要扩容的分区
+umount -lf /dev/nvme1n1p1 2.使用parted对分区进行扩容
+parted /dev/nvme1n1p1 3.在parted界面使用 p 查看当前分区详细信息
+(parted)p 4.扩容分区: resizepart 分区号 分区结束位置
+(parted)resizepart 1 1000G 5.退出 parted
+(parted)quit 6.重新挂载分区
+mount /dev/nvme1n1p1 /data 7.让文件系统识别变更的分区大小(不同文件系统命令不同，举例的是xfs)
+resize2fs /dev/nvme1n1p1 8."/>
+
+  
+  
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header class="mx-auto flex h-[5rem] max-w-3xl px-8 lg:justify-center">
+  <div class="relative z-50 mr-auto flex items-center">
+    <a
+      class="-translate-x-[1px] -translate-y-0.5 text-3xl font-bold"
+      href="https://jinan999.github.io/"
+      >My New Hugo Site</a
+    >
+    <a
+      class="btn-dark ml-6 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.png)_left_center/_auto_theme('spacing.6')_no-repeat] [transition:_background-position_0.4s_steps(5)] dark:[background-position:right]"
+    ></a>
+  </div>
+
+  <a
+    class="btn-menu relative z-50 -mr-8 flex h-[5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+  ></a>
+
+  
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = `"#faf6f1"`.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? '#000' : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full select-none flex-col justify-center pb-16 duration-200 dark:bg-black lg:static lg:h-auto lg:flex-row lg:!bg-transparent lg:pb-0 lg:transition-none"
+  >
+    
+    
+
+    
+  </div>
+</header>
+
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-10rem)] max-w-3xl px-8 pt-20 pb-32 dark:prose-invert"
+    >
+      
+
+<article>
+  <header class="mb-20">
+    <h1 class="!my-0 pb-2.5">扩容磁盘大小</h1>
+
+    
+    <div class="text-sm opacity-60">
+      
+      <time>Jan 29, 2023</time>
+      
+      
+    </div>
+    
+  </header>
+
+  <section><h1 id="扩容磁盘大小"><strong>扩容磁盘大小</strong></h1>
+<p><strong>查看磁盘分区信息</strong></p>
+<pre tabindex="0"><code>lsblk
+</code></pre><p><strong>一.虚拟机dos扩容</strong></p>
+<p>1.虚拟机扩容磁盘</p>
+<p><img src="C:%5CUsers%5CMloong%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20230129212759534.png" alt="image-20230129212759534"></p>
+<p>2.查看磁盘相关信息</p>
+<pre tabindex="0"><code>df -h
+</code></pre><p>3.查看磁盘分区</p>
+<pre tabindex="0"><code>fdisk -l
+</code></pre><p>4.创建一个新分区（/dev/sda3）</p>
+<pre tabindex="0"><code>fdisk /dev/sda
+</code></pre><p>5.创建完成后重启</p>
+<pre tabindex="0"><code>reboot
+</code></pre><p>6.创建物理卷</p>
+<pre tabindex="0"><code>pvcreate /dev/sda3
+</code></pre><p>7.查看新建的物理卷和大小</p>
+<pre tabindex="0"><code>pvdisplay
+</code></pre><p>8.将添加新的物理卷（PV），加载到需要扩容的卷组（VG）</p>
+<pre tabindex="0"><code>vgextend 卷组名 /dev/sda3
+</code></pre><p>9.查看卷组信息</p>
+<pre tabindex="0"><code>vgdisplay
+</code></pre><p>10.增加卷组大小</p>
+<pre tabindex="0"><code>#查看卷组所在目录
+
+cd /dev/mapper
+
+ls -l              
+
+#增加卷组大小
+
+lvresize -l +100%FREE /dev/mapper/centos-root
+</code></pre><p>12.重新识别卷组大小</p>
+<pre tabindex="0"><code>xfs_growfs /dev/mapper/centos-root
+</code></pre><p><strong>二.云服务gpt扩容</strong></p>
+<p>1.卸载需要扩容的分区</p>
+<pre tabindex="0"><code>umount -lf /dev/nvme1n1p1
+</code></pre><p>2.使用parted对分区进行扩容</p>
+<pre tabindex="0"><code>parted /dev/nvme1n1p1
+</code></pre><p>3.在parted界面使用  p  查看当前分区详细信息</p>
+<pre tabindex="0"><code>(parted)p
+</code></pre><p>4.扩容分区:  resizepart  分区号  分区结束位置</p>
+<pre tabindex="0"><code>(parted)resizepart 1 1000G
+</code></pre><p>5.退出  parted</p>
+<pre tabindex="0"><code>(parted)quit
+</code></pre><p>6.重新挂载分区</p>
+<pre tabindex="0"><code>mount /dev/nvme1n1p1 /data
+</code></pre><p>7.让文件系统识别变更的分区大小(不同文件系统命令不同，举例的是xfs)</p>
+<pre tabindex="0"><code>resize2fs /dev/nvme1n1p1
+</code></pre><p>8.查看</p>
+<pre tabindex="0"><code>df -h
+</code></pre></section>
+
+  
+  
+
+  
+  
+  
+  <nav
+    class="mt-24 flex rounded-lg bg-black/[3%] p-1.5 text-lg dark:bg-white/[8%]"
+  >
+    
+    
+    <a
+      class="ml-auto flex w-1/2 items-center justify-end rounded-md p-6 pl-3 no-underline hover:bg-black/[2%]"
+      href="https://jinan999.github.io/post/myfirstblog/"
+      ><span>Myfirstblog</span><span class="ml-1.5">→</span></a
+    >
+    
+  </nav>
+  
+
+  
+  
+
+  
+  
+</article>
+
+
+    </main>
+
+    <footer
+  class="opaco mx-auto flex h-[5rem] max-w-3xl items-center px-8 text-[0.9em] opacity-60"
+>
+  <div class="mr-auto">
+    &copy; 2023
+    <a class="link" href="https://jinan999.github.io/">My New Hugo Site</a>
+  </div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >Powered by Hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >▷ Paper 6</a
+  >
+</footer>
+
+  </body>
+</html>
