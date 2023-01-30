@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html
+  class="not-ready text-sm lg:text-base"
+  style="--bg: #faf6f1"
+  lang="en-us"
+>
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>ELK伪集群部署 - My New Hugo Site</title>
+
+  
+  <meta name="theme-color" />
+  
+  <meta name="description" content="环境：此测试是在一台主机上部署 ELK 伪集群，主机IP：192.168.0.129 修改服务器内存参数(必须修改，不然elk启动后会报错)： sysctl -w vm.max_map_count=262144 1.部署 elasticsearch 节点1：es01 #创建文件 mkdir -p /usr/local/elk01 touch /usr/local/elk01/docker-compose.yml /usr/local/elk01/es01.yml
+#编写docker-compose.yml cat &gt; /usr/local/elk01/docker-compose.yml &laquo;EOF version: &lsquo;2.2&rsquo; services: es01: image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3 container_name: es01 restart: always environment: - bootstrap.memory_lock=true - &ldquo;ES_JAVA_OPTS=-Xms2g -Xmx2g&rdquo; ulimits: memlock: soft: -1 hard: -1 volumes: - data01:/usr/share/elasticsearch/data - /elk_backups/data:/usr/share/elasticsearch/backup - /usr/local/elk01/es01.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro ports: - 9292:9200 - 9300:9300 networks: - elastic volumes: data01: driver: local networks: elastic: driver: bridge EOF
+#编写配置文件 es01.yml cat &gt; /usr/local/elk01/es01." />
+  <meta
+    name="author"
+    content=""
+  />
+  
+
+  
+  
+  
+  
+  
+  
+  <link rel="preload stylesheet" as="style" href="https://jinan999.github.io/main.min.css" />
+
+  
+  <script
+    defer
+    src="https://jinan999.github.io/highlight.min.js"
+    onload="hljs.initHighlightingOnLoad();"
+  ></script>
+  
+
+  
+   
+  <link rel="preload" as="image" href="https://jinan999.github.io/theme.png" />
+
+  
+  
+  
+  
+
+  
+
+  
+  <link rel="icon" href="https://jinan999.github.io/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://jinan999.github.io/apple-touch-icon.png" />
+
+  
+  <meta name="generator" content="Hugo 0.110.0-DEV">
+
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <meta property="og:title" content="ELK伪集群部署" />
+<meta property="og:description" content="环境：此测试是在一台主机上部署 ELK 伪集群，主机IP：192.168.0.129 修改服务器内存参数(必须修改，不然elk启动后会报错)： sysctl -w vm.max_map_count=262144 1.部署 elasticsearch 节点1：es01 #创建文件 mkdir -p /usr/local/elk01 touch /usr/local/elk01/docker-compose.yml /usr/local/elk01/es01.yml
+#编写docker-compose.yml cat &gt; /usr/local/elk01/docker-compose.yml &laquo;EOF version: &lsquo;2.2&rsquo; services: es01: image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3 container_name: es01 restart: always environment: - bootstrap.memory_lock=true - &ldquo;ES_JAVA_OPTS=-Xms2g -Xmx2g&rdquo; ulimits: memlock: soft: -1 hard: -1 volumes: - data01:/usr/share/elasticsearch/data - /elk_backups/data:/usr/share/elasticsearch/backup - /usr/local/elk01/es01.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro ports: - 9292:9200 - 9300:9300 networks: - elastic volumes: data01: driver: local networks: elastic: driver: bridge EOF
+#编写配置文件 es01.yml cat &gt; /usr/local/elk01/es01." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://jinan999.github.io/post/elk%E4%BC%AA%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2023-01-30T21:03:01+08:00" />
+<meta property="article:modified_time" content="2023-01-30T21:03:01+08:00" />
+
+  
+  <meta itemprop="name" content="ELK伪集群部署">
+<meta itemprop="description" content="环境：此测试是在一台主机上部署 ELK 伪集群，主机IP：192.168.0.129 修改服务器内存参数(必须修改，不然elk启动后会报错)： sysctl -w vm.max_map_count=262144 1.部署 elasticsearch 节点1：es01 #创建文件 mkdir -p /usr/local/elk01 touch /usr/local/elk01/docker-compose.yml /usr/local/elk01/es01.yml
+#编写docker-compose.yml cat &gt; /usr/local/elk01/docker-compose.yml &laquo;EOF version: &lsquo;2.2&rsquo; services: es01: image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3 container_name: es01 restart: always environment: - bootstrap.memory_lock=true - &ldquo;ES_JAVA_OPTS=-Xms2g -Xmx2g&rdquo; ulimits: memlock: soft: -1 hard: -1 volumes: - data01:/usr/share/elasticsearch/data - /elk_backups/data:/usr/share/elasticsearch/backup - /usr/local/elk01/es01.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro ports: - 9292:9200 - 9300:9300 networks: - elastic volumes: data01: driver: local networks: elastic: driver: bridge EOF
+#编写配置文件 es01.yml cat &gt; /usr/local/elk01/es01."><meta itemprop="datePublished" content="2023-01-30T21:03:01+08:00" />
+<meta itemprop="dateModified" content="2023-01-30T21:03:01+08:00" />
+<meta itemprop="wordCount" content="365">
+<meta itemprop="keywords" content="" />
+  
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ELK伪集群部署"/>
+<meta name="twitter:description" content="环境：此测试是在一台主机上部署 ELK 伪集群，主机IP：192.168.0.129 修改服务器内存参数(必须修改，不然elk启动后会报错)： sysctl -w vm.max_map_count=262144 1.部署 elasticsearch 节点1：es01 #创建文件 mkdir -p /usr/local/elk01 touch /usr/local/elk01/docker-compose.yml /usr/local/elk01/es01.yml
+#编写docker-compose.yml cat &gt; /usr/local/elk01/docker-compose.yml &laquo;EOF version: &lsquo;2.2&rsquo; services: es01: image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3 container_name: es01 restart: always environment: - bootstrap.memory_lock=true - &ldquo;ES_JAVA_OPTS=-Xms2g -Xmx2g&rdquo; ulimits: memlock: soft: -1 hard: -1 volumes: - data01:/usr/share/elasticsearch/data - /elk_backups/data:/usr/share/elasticsearch/backup - /usr/local/elk01/es01.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro ports: - 9292:9200 - 9300:9300 networks: - elastic volumes: data01: driver: local networks: elastic: driver: bridge EOF
+#编写配置文件 es01.yml cat &gt; /usr/local/elk01/es01."/>
+
+  
+  
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header class="mx-auto flex h-[5rem] max-w-3xl px-8 lg:justify-center">
+  <div class="relative z-50 mr-auto flex items-center">
+    <a
+      class="-translate-x-[1px] -translate-y-0.5 text-3xl font-bold"
+      href="https://jinan999.github.io/"
+      >My New Hugo Site</a
+    >
+    <a
+      class="btn-dark ml-6 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.png)_left_center/_auto_theme('spacing.6')_no-repeat] [transition:_background-position_0.4s_steps(5)] dark:[background-position:right]"
+    ></a>
+  </div>
+
+  <a
+    class="btn-menu relative z-50 -mr-8 flex h-[5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+  ></a>
+
+  
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = `"#faf6f1"`.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? '#000' : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full select-none flex-col justify-center pb-16 duration-200 dark:bg-black lg:static lg:h-auto lg:flex-row lg:!bg-transparent lg:pb-0 lg:transition-none"
+  >
+    
+    
+
+    
+  </div>
+</header>
+
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-10rem)] max-w-3xl px-8 pt-20 pb-32 dark:prose-invert"
+    >
+      
+
+<article>
+  <header class="mb-20">
+    <h1 class="!my-0 pb-2.5">ELK伪集群部署</h1>
+
+    
+    <div class="text-sm opacity-60">
+      
+      <time>Jan 30, 2023</time>
+      
+      
+    </div>
+    
+  </header>
+
+  <section><p>环境：此测试是在一台主机上部署 ELK 伪集群，主机IP：192.168.0.129
+修改服务器内存参数(必须修改，不然elk启动后会报错)：
+sysctl -w vm.max_map_count=262144
+1.部署 elasticsearch
+节点1：es01
+#创建文件
+mkdir -p /usr/local/elk01
+touch /usr/local/elk01/docker-compose.yml /usr/local/elk01/es01.yml</p>
+<p>#编写docker-compose.yml
+cat &gt; /usr/local/elk01/docker-compose.yml &laquo;EOF
+version: &lsquo;2.2&rsquo;
+services:
+es01:
+image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3
+container_name: es01
+restart: always
+environment:
+- bootstrap.memory_lock=true
+- &ldquo;ES_JAVA_OPTS=-Xms2g -Xmx2g&rdquo;
+ulimits:
+memlock:
+soft: -1
+hard: -1
+volumes:
+- data01:/usr/share/elasticsearch/data
+- /elk_backups/data:/usr/share/elasticsearch/backup
+- /usr/local/elk01/es01.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+ports:
+- 9292:9200
+- 9300:9300
+networks:
+- elastic
+volumes:
+data01:
+driver: local
+networks:
+elastic:
+driver: bridge
+EOF</p>
+<p>#编写配置文件 es01.yml
+cat &gt; /usr/local/elk01/es01.yml &laquo;EOF
+path.repo: [&quot;/usr/share/elasticsearch/backup&quot;]
+network.host: 0.0.0.0
+http.cors.enabled: true
+http.cors.allow-origin: &ldquo;*&rdquo;
+node.name: es01
+cluster.name: es-cluster-prod
+node.master: true
+gateway.expected_nodes: 1
+discovery.zen.minimum_master_nodes: 1
+transport.tcp.port: 9300
+indices.fielddata.cache.size: 40%
+indices.breaker.total.use_real_memory: false
+network.publish_host: 192.168.0.129
+discovery.seed_hosts: 192.168.0.129:9300,192.168.0.129:9301
+cluster.initial_master_nodes: 192.168.0.129:9300
+EOF</p>
+<p>#启动容器
+cd /usr/local/elk01
+docker-compose up -d
+节点2：es02
+#创建文件
+mkdir -p /usr/local/elk02
+touch /usr/local/elk02/docker-compose.yml /usr/local/elk02/es02.yml</p>
+<p>#编写docker-compose.yml
+cat &gt; /usr/local/elk02/docker-compose.yml &laquo;EOF
+version: &lsquo;2.2&rsquo;
+services:
+es02:
+image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3
+container_name: es02
+restart: always
+environment:
+- bootstrap.memory_lock=true
+- &ldquo;ES_JAVA_OPTS=-Xms2g -Xmx2g&rdquo;
+ulimits:
+memlock:
+soft: -1
+hard: -1
+volumes:
+- data02:/usr/share/elasticsearch/data
+- /elk_backups/data:/usr/share/elasticsearch/backup
+- /usr/local/elk02/es02.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+ports:
+- 9301:9301
+networks:
+- elastic
+volumes:
+data02:
+driver: local
+networks:
+elastic:
+driver: bridge
+EOF</p>
+<p>#编写配置文件 es02.yml
+cat &gt; /usr/local/elk02/es02.yml &laquo;EOF
+path.repo: [&quot;/usr/share/elasticsearch/backup&quot;]
+network.host: 0.0.0.0
+http.cors.enabled: true
+http.cors.allow-origin: &ldquo;*&rdquo;
+node.name: es02
+cluster.name: es-cluster-prod
+node.master: false
+gateway.expected_nodes: 1
+discovery.zen.minimum_master_nodes: 1
+transport.tcp.port: 9301
+indices.fielddata.cache.size: 40%
+indices.breaker.total.use_real_memory: false
+network.publish_host: 192.168.0.129
+discovery.seed_hosts: 192.168.0.129:9300
+,192.168.0.129:9301
+cluster.initial_master_nodes: 192.168.0.129:9300
+EOF</p>
+<p>#启动容器
+cd /usr/local/elk02
+docker-compose up -d
+2.部署 kibana
+#创建文件
+mkdir -p /usr/local/kibana
+touch /usr/local/kibana/kibana.yml</p>
+<p>#编写配置文件 kibana.yml
+cat &gt; /usr/local/kibana/kibana.yml &laquo;EOF
+server.name: kibana
+server.host: &ldquo;0.0.0.0&rdquo;
+server.maxPayloadBytes: 10485760 #传入服务器请求的最大有效负载大小(以字节为单位)
+elasticsearch.hosts: [ &ldquo;http://192.168.0.129:9292&rdquo;,&ldquo;http://192.168.0.129:9293&rdquo; ]
+xpack.monitoring.ui.container.elasticsearch.enabled: true
+xpack.reporting.csv.maxSizeBytes: 2097152000  # csv文件大小,默认为10485760（10MB）
+xpack.reporting.queue.timeout: 3000000  # 超时时间,默认是120000(2分钟)
+EOF</p>
+<p>#启动 kibana
+docker run &ndash;name kibana &ndash;privileged=true &ndash;restart=always -d -e &ldquo;I18N_LOCALE=zh-CN&rdquo; -p 5692:5601 -v /usr/local/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml -v /etc/localtime:/etc/localtime:ro docker.elastic.co/kibana/kibana:7.9.3</p>
+<p>3.部署 filebeat
+#创建文件
+mkdir /filebeat_data</p>
+<p>#编写filebeat配置文件
+cat &gt; /filebeat_data/filebeat.yml &laquo;EOF
+filebeat.inputs:</p>
+<ul>
+<li>type: log
+paths:
+<ul>
+<li>/var/log/gamelog/<em>/ActionLogs/</em>.log
+json.keys_under_root: true
+json.overwrite_keys: true
+tags: [&ldquo;prod_logs&rdquo;]
+harvester_buffer_size: 1638400
+scan_frequency: 5m
+http.enabled: true
+http.port: 5067
+setup.template.name: &quot;&quot;
+setup.template.pattern: &quot;&quot;
+setup.template.enabled: false
+setup.template.overwrite: true
+processors:</li>
+</ul>
+</li>
+<li>timestamp:
+field: time
+timezone: Asia/Shanghai
+layouts:
+- &lsquo;2006-01-02 15:04:05&rsquo;
+- &lsquo;2006-01-02 15:04:05.999&rsquo;
+test:
+- &lsquo;2019-06-22 16:33:51&rsquo;</li>
+<li>truncate_fields:
+fields:
+- time
+max_characters: 7
+fail_on_error: false
+ignore_missing: true</li>
+<li>drop_fields:
+fields: [&ldquo;host&rdquo;,&ldquo;agent&rdquo;,&ldquo;esc&rdquo;,&ldquo;input&rdquo;]
+output.elasticsearch:
+hosts: [&ldquo;192.168.0.129:9292&rdquo;]
+bulk_max_size: 500
+indices:
+<ul>
+<li>index: &ldquo;%{[logEvt]}-%{[time]}&rdquo;
+when.contains:
+tags: &ldquo;prod_logs&rdquo;
+EOF</li>
+</ul>
+</li>
+</ul>
+<p>#下载镜像
+docker pull elastic/filebeat:7.9.3</p>
+<p>#启动 filebeat
+docker run -u root -d &ndash;restart=always &ndash;name=filebeat -v /data/game_server/target/Logs:/var/log/gamelog/ -v /filebeat_data/filebeat.yml:/usr/share/filebeat/filebeat.yml -v /filebeat_data/registry/:/usr/share/filebeat/data/registry/ elastic/filebeat:7.9.3</p>
+</section>
+
+  
+  
+
+  
+  
+  
+  <nav
+    class="mt-24 flex rounded-lg bg-black/[3%] p-1.5 text-lg dark:bg-white/[8%]"
+  >
+    
+    
+    <a
+      class="ml-auto flex w-1/2 items-center justify-end rounded-md p-6 pl-3 no-underline hover:bg-black/[2%]"
+      href="https://jinan999.github.io/post/%E6%89%A9%E5%AE%B9%E7%A3%81%E7%9B%98%E5%A4%A7%E5%B0%8F/"
+      ><span>扩容磁盘大小</span><span class="ml-1.5">→</span></a
+    >
+    
+  </nav>
+  
+
+  
+  
+
+  
+  
+</article>
+
+
+    </main>
+
+    <footer
+  class="opaco mx-auto flex h-[5rem] max-w-3xl items-center px-8 text-[0.9em] opacity-60"
+>
+  <div class="mr-auto">
+    &copy; 2023
+    <a class="link" href="https://jinan999.github.io/">My New Hugo Site</a>
+  </div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >Powered by Hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >▷ Paper 6</a
+  >
+</footer>
+
+  </body>
+</html>
